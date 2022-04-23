@@ -4,7 +4,7 @@ version: 2.1
 jobs:
   build_backstage:
     docker:
-      - image: cimg/node:16.0.0
+      - image: cimg/node:16.13.0
 
     steps:
       - checkout
@@ -27,7 +27,12 @@ jobs:
       - run:
           name: docker build 
           command: |
-            docker build app packages/backend/Dockerfile . 
+            docker login -u rohitlavu -p 14ff7030-76b3-41b7-8a9e-14b8f0157584
+
+      - run:
+          name: docker build 
+          command: |
+            docker build app packages/backend/Dockerfile .
 
 
 workflows:
