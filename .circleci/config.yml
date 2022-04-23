@@ -1,0 +1,54 @@
+version: 2.1
+
+ # Build and Push to ACR
+ jobs:
+   build_backstage:
+     parameters:
+       login_server_name:
+         type: string
+         default: crcloudplatformeastus001.azurecr.io
+       registry_name:
+         description: "The Azure container registry"
+         type: string
+         default: crcloudplatformeastus001
+       acr_repo_name:
+         description: "Name of the container repo in the Azure container registry"
+         type: string
+       tag:
+         description: "Tag for the Docker image"
+         type: string
+         default: ${CIRCLE_SHA1:0:7}
+
+     docker:
+       - image: cimg/node:18.0.0
+
+     steps:
+       - checkout
+
+       - setup_remote_docker:
+           version: 19.03.13
+           docker_layer_caching: true
+
+      - run:
+          name: build
+          command: |
+            yarn install --frozen-lockfile
+
+            # tsc outputs type definitions to dist-types/ in the repo root, which are then consumed by the build
+            yarn tsc
+
+            # Build all packages and in the end bundle them all up into the packages/backend/dist folder.
+            yarn build
+
+      - run:
+          name: docker build 
+          command: |
+            docker build app packages/backend/Dockerfile . 
+
+
+workflows:
+   build_backstage:
+     jobs:
+       - build_backstage
+
+
