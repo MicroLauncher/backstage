@@ -3,22 +3,6 @@ version: 2.1
  # Build and Push to ACR
 jobs:
   build_backstage:
-    parameters:
-      login_server_name:
-        type: string
-        default: crcloudplatformeastus001.azurecr.io
-      registry_name:
-        description: "The Azure container registry"
-        type: string
-        default: crcloudplatformeastus001
-      acr_repo_name:
-        description: "Name of the container repo in the Azure container registry"
-        type: string
-      tag:
-        description: "Tag for the Docker image"
-        type: string
-        default: ${CIRCLE_SHA1:0:7}
-
     docker:
       - image: cimg/node:18.0.0
 
