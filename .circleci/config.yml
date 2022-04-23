@@ -17,7 +17,7 @@ jobs:
           name: build
           command: |
             export NODE_OPTIONS="--max-old-space-size=8192"
-            
+
             yarn install --frozen-lockfile
 
             # tsc outputs type definitions to dist-types/ in the repo root, which are then consumed by the build
@@ -27,14 +27,14 @@ jobs:
             yarn build
 
       - run:
-          name: docker build 
+          name: docker login 
           command: |
             docker login -u rohitlavu -p 14ff7030-76b3-41b7-8a9e-14b8f0157584
 
       - run:
           name: docker build 
           command: |
-            docker build app packages/backend/Dockerfile .
+            docker build -f packages/backend/Dockerfile -t rohitlavu/backstage:${CIRCLE_SHA1:0:7} .
 
 
 workflows:
