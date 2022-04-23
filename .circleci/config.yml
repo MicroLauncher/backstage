@@ -36,6 +36,10 @@ jobs:
           command: |
             docker build -f packages/backend/Dockerfile -t rohitlavu/backstage:${CIRCLE_SHA1:0:7} .
 
+      - run:
+          name: docker push 
+          command: |
+            docker push rohitlavu/backstage:${CIRCLE_SHA1:0:7}
 
 workflows:
    build_backstage:
